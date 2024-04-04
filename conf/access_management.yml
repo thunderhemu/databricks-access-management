@@ -1,0 +1,13 @@
+users:
+  - email: john.doe@example.com
+    groups: [Data Scientists, Project X Team]
+  - email: jane.doe@example.com
+    groups: [Data Engineers]
+
+groups:
+  - name: Data Scientists
+    permissions: [can_edit, can_run]
+  - name: Data Engineers
+    permissions: [can_run]
+  - name: Project X Team
+    permissions: [can_manage]
