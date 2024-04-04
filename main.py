@@ -2,11 +2,26 @@ import os
 import requests
 import yaml
 
-# Environment configuration
-DATABRICKS_INSTANCE = os.environ.get('DATABRICKS_HOST')
-TOKEN = os.environ.get('DATABRICKS_TOKEN')
-HEADERS = {'Authorization': f'Bearer {TOKEN}', 'Content-Type': 'application/scim+json'}
+TENANT_ID = os.environ['AZURE_TENANT_ID']
+CLIENT_ID = os.environ['AZURE_CLIENT_ID']
+CLIENT_SECRET = os.environ['AZURE_CLIENT_SECRET']
+DATABRICKS_RESOURCE_ID = '2ff814a6-3304-4ab8-85cb-cd0e6f879c1d'  # This is constant for Azure Databricks
+DATABRICKS_INSTANCE = os.environ['DATABRICKS_INSTANCE']
 
+def get_access_token():
+    """Authenticate using service principal and secret to obtain an Azure AD token for Databricks."""
+    url = f'https://login.microsoftonline.com/{TENANT_ID}/oauth2/token'
+    payload = {
+        'grant_type': 'client_credentials',
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'resource': DATABRICKS_RESOURCE_ID
+    }
+    response = requests.post(url, data=payload)
+    if response.status_code == 200:
+        return response.json()['access_token']
+    else:
+        raise Exception(f"Failed to obtain access token: {response.text}")
 
 def send_request(method, endpoint, body=None):
     """Send API requests to Databricks"""
