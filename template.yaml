@@ -1,0 +1,24 @@
+database:
+  url: 'jdbc:postgresql://localhost:5432/your_database'
+  user: 'your_user'
+  password: 'your_password'
+  driver: 'org.postgresql.Driver'
+  dbtable: 'your_table'
+  query: null
+  query_file: null
+  incremental_load: true
+  last_updated_column: 'last_updated'  # Column used to track changes
+  last_run_time: '2021-01-01T00:00:00'  # Last time the ETL was run
+
+delta:
+  bronze_path: '/path/to/bronze/delta/table'
+  file_format: 'delta'
+  load_type: 'overwrite'
+  use_partitioning: true
+  partition_columns: ['date']
+  enable_schema_evolution: true
+
+unity_catalog:
+  enable: true
+  database: 'your_database_name'
+  table_name: 'your_table_name'
