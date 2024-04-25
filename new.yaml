@@ -6,7 +6,7 @@ database:
   driver: "org.postgresql.Driver"
 
 table:
-  name: "source_table"  # Used if query_text and query_file are not provided
+  name: "source_table"
   unity_catalog_table: "bronze_table"
   load_type: "full"  # 'full' or 'incremental'
   overwrite: true
@@ -20,11 +20,11 @@ table:
     owner: "data_team"
 
 query:
-  use_query: true  # Set to true to prioritize query_text or query_file over table name
-  query_text: ""  # Direct SQL query (if this is empty, the script will check for query_file)
-  query_file: "/dbfs/path/to/query.sql"  # Path to a file containing the SQL query
+  use_query: false
+  query_text: ""
+  query_file: ""
 
 incremental:
-  column: "last_updated"  # Only needed if load_type is 'incremental'
+  column: "last_updated"
   last_value_table: "metadata"
   last_value_column: "last_value"
