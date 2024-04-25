@@ -1,0 +1,22 @@
+kafka:
+  bootstrap_servers: "localhost:9092"
+  topic: "your_topic"
+  starting_offsets: "earliest"
+
+schema:
+  use_schema_registry: true
+  schema_registry_url: "http://localhost:8081"
+  schema_registry_subject: "your_subject-value"
+  schema_fallback_python_file: "/dbfs/path/to/your/schema.py"
+
+streaming:
+  output_path: "/mnt/delta/bronze_table"
+  checkpoint_location: "/mnt/delta/checkpoints"
+  trigger_processing_time: "30 seconds"
+  table_name: "bronze_table"
+  database_name: "default"
+  enable_cdf: true
+  tags:
+    project: "VendueTech"
+    environment: "development"
+    owner: "data_team"
