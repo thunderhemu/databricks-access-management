@@ -10,16 +10,17 @@ def load_config(config_path: str) -> dict:
         config = yaml.safe_load(file)
     return config
 
-def get_last_processed_value():
+def get_last_processed_value(spark, config):
     """ Fetch the last processed value of the incremental column from the Delta table. """
     try:
-        df = spark.read.format("delta").load(config['output']['path'])
-        last_value = df.select(max_(col(config['load']['column']))).collect()[0][0]
+        delta_table = DeltaTable.forPath(spark, config['delta']['bronze_path'])
+        last_value = delta_table.toDF().select(max_(col(config['database']['last_updated_column']))).collect()[0][0]
         return last_value
     except Exception as e:
         print("Error reading from Delta table: ", e)
         # Return a default or initial value if the table is empty or does not exist
-        return config['load']['last_value']
+        return config['database']['last_run_time']
+
 
 def validate_config(config):
     expected_keys = {
