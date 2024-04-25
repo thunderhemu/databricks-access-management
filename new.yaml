@@ -1,0 +1,30 @@
+database:
+  type: "postgresql"
+  jdbc_url: "jdbc:postgresql://hostname:port/database"
+  user: "dbuser"
+  password: "dbpassword"
+  driver: "org.postgresql.Driver"
+
+table:
+  name: "source_table"  # Used if query_text and query_file are not provided
+  unity_catalog_table: "bronze_table"
+  load_type: "full"  # 'full' or 'incremental'
+  overwrite: true
+  retain_versions: 3
+  create_table: true
+  file_format: "delta"
+  partition_by: ["date_column", "region_column"]
+  tags:
+    project: "VendueTech"
+    environment: "development"
+    owner: "data_team"
+
+query:
+  use_query: true  # Set to true to prioritize query_text or query_file over table name
+  query_text: ""  # Direct SQL query (if this is empty, the script will check for query_file)
+  query_file: "/dbfs/path/to/query.sql"  # Path to a file containing the SQL query
+
+incremental:
+  column: "last_updated"  # Only needed if load_type is 'incremental'
+  last_value_table: "metadata"
+  last_value_column: "last_value"
