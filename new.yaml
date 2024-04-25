@@ -8,10 +8,11 @@ database:
 table:
   name: "source_table"
   unity_catalog_table: "bronze_table"
+  delta_path: "/mnt/delta/bronze_table"  # Mandatory Delta Lake path
   load_type: "full"  # 'full' or 'incremental'
   overwrite: true
   retain_versions: 3
-  create_table: true
+  create_table: false  # Optional: Whether to create a table in Unity Catalog
   file_format: "delta"
   partition_by: ["date_column", "region_column"]
   tags:
